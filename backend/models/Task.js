@@ -1,8 +1,9 @@
 import sequelize from "../database.js";
 import { DataTypes } from "sequelize";
+import User from "./User.js";
 
-const User = sequelize.define(
-  "User",
+const Task = sequelize.define(
+  "Task",
   {
     uuid: {
       type: DataTypes.UUID,
@@ -10,18 +11,28 @@ const User = sequelize.define(
       allowNull: false,
       primaryKey: true,
     },
-    email: {
-      type: DataTypes.STRING,
-      unique: true,
-      allowNull: false,
-    },
-    password: {
+    title: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    name: {
+
+    description: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+
+    priority: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    userUuid: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: User,
+        key: "uuid",
+      },
     },
   },
   {
@@ -30,9 +41,9 @@ const User = sequelize.define(
   }
 );
 
-User.hasMany(Task, {
+Task.belongsTo(User, {
   foreignKey: "userUuid",
-  as: "tasks",
+  as: "user",
 });
 
-export default User;
+export default Task;
