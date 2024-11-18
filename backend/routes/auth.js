@@ -48,7 +48,7 @@ const generateTokens = (user, res) => {
     { uuid: user.uuid, name: user.name, email: user.email },
     process.env.JWT_SECRET,
     {
-      expiresIn: "15m",
+      expiresIn: "0.5m",
     }
   );
 
@@ -61,15 +61,39 @@ const generateTokens = (user, res) => {
       expiresIn: "7d",
     }
   );
+  setRefreshToken(res, refresh_token);
 
+  return { access_token };
+};
+
+const setRefreshToken = (res, refresh_token) => {
   res.cookie("refresh_token", refresh_token, {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
-
-  return { access_token };
 };
+
+router.post("/refresh-token", async (req, res) => {
+  try {
+    const refreshToken = req.cookies.refresh_token;
+
+    if (!refreshToken) {
+      return res.status(401).json({ message: "Refresh token not provided" });
+    }
+
+    const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
+    const user = await User.findByPk(decoded.uuid);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const { access_token, refresh_token } = generateTokens(user, res);
+    setRefreshToken(res, refresh_token);
+
+    return res.json({ access_token });
+  } catch (error) {
+    console.error("Failed refreshing token: ", error);
+  }
+});
 
 export default router;
