@@ -1,11 +1,13 @@
 import express from "express";
 import bodyParser from "body-parser";
 import authRoutes from "./routes/auth.js";
+import taskRoutes from "./routes/tasks.js";
 import sequelize from "./database.js";
 import dotenv from "dotenv";
 import cors from "cors";
 import https from "https";
 import fs from "fs";
+import { initModels } from "./models/index.js";
 
 dotenv.config();
 
@@ -20,6 +22,9 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/tasks", taskRoutes);
+
+initModels();
 
 sequelize
   .sync({ force: false })

@@ -1,6 +1,5 @@
 import sequelize from "../database.js";
 import { DataTypes } from "sequelize";
-import User from "./User.js";
 
 const Task = sequelize.define(
   "Task",
@@ -22,17 +21,19 @@ const Task = sequelize.define(
     },
 
     priority: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM("low", "medium", "high"),
       allowNull: false,
+    },
+
+    completed: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     },
 
     userUuid: {
       type: DataTypes.UUID,
-      allowNull: false,
-      references: {
-        model: User,
-        key: "uuid",
-      },
+      allowNull: true,
     },
   },
   {
@@ -40,10 +41,5 @@ const Task = sequelize.define(
     paranoid: true,
   }
 );
-
-Task.belongsTo(User, {
-  foreignKey: "userUuid",
-  as: "user",
-});
 
 export default Task;

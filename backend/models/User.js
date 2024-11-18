@@ -30,9 +30,4 @@ const User = sequelize.define(
   }
 );
 
-User.hasMany(Task, {
-  foreignKey: "userUuid",
-  as: "tasks",
-});
-
 export default User;
