@@ -23,12 +23,16 @@ const router = new VueRouter({
   routes,
 });
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
   const isAuthenticated = store.getters["auth/isAuthenticated"];
 
   if (requiresAuth && !isAuthenticated) {
     return next("/login");
+  }
+
+  if ((to.path === "/login" || to.path === "/signup") && isAuthenticated) {
+    return next("/");
   }
 
   next();
