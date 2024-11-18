@@ -1,5 +1,6 @@
 <template>
-  <div class="container">
+  <div class="container position-relative">
+    <div class="position-absolute"><LogoutButton /></div>
     <header class="mb-4">
       <h1 class="text-center">ToDo List</h1>
     </header>
@@ -33,6 +34,7 @@
 <script>
 import TaskList from "@/components/TaskList.vue";
 import TaskForm from "@/components/TaskForm.vue";
+import LogoutButton from "@/components/LogoutButton.vue";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -40,6 +42,7 @@ export default {
   components: {
     TaskList,
     TaskForm,
+    LogoutButton,
   },
   data() {
     return {

@@ -24,6 +24,7 @@ router.post("/login", async (req, res) => {
     res.json({ access_token });
   } catch (error) {
     console.error("Failed login: ", error);
+    return res.status(500).json({ message: "Internal server error", error });
   }
 });
 
@@ -40,6 +41,19 @@ router.post("/signup", async (req, res) => {
     res.json({ access_token });
   } catch (error) {
     console.error("Failed signup: ", error);
+    return res.status(500).json({ message: "Internal server error", error });
+  }
+});
+
+router.post("/logout", (req, res) => {
+  try {
+    res.clearCookie("refresh_token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+  } catch (error) {
+    console.error("Failed to logout: ", error);
   }
 });
 
@@ -69,7 +83,7 @@ const generateTokens = (user, res) => {
 const setRefreshToken = (res, refresh_token) => {
   res.cookie("refresh_token", refresh_token, {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
@@ -92,6 +106,7 @@ router.post("/refresh-token", async (req, res) => {
     return res.json({ access_token });
   } catch (error) {
     console.error("Failed refreshing token: ", error);
+    return res.status(500).json({ message: "Internal server error", error });
   }
 });
 
