@@ -31,16 +31,22 @@
         Completed
       </button>
     </div>
-    <ul style="max-height: 400px" class="list-group overflow-auto pb-5">
-      <TaskItem
-        v-for="task in filteredTasks"
-        :key="task.id"
-        :task="task"
+    <RecycleScroller
+      class="scroller"
+      :items="filteredTasks"
+      :item-size="88"
+      key-field="uuid"
+      v-slot="{ item }"
+      ><TaskItem
+        :key="item.uuid"
+        :task="item"
         @edit="editTask"
         @delete="deleteTask"
         @toggleComplete="toggleComplete"
       />
-    </ul>
+    </RecycleScroller>
+
+    <ul style="max-height: 400px" class="list-group overflow-auto pb-5"></ul>
   </div>
 </template>
 
