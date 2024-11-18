@@ -1,14 +1,4 @@
-import axios from "axios";
-
-console.log("Base URL:", process.env.VUE_APP_API_URL);
-
-const api = axios.create({
-  baseURL: process.env.VUE_APP_API_URL,
-  withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+import { api } from "./api";
 
 export const login = async (credentials) => {
   try {
