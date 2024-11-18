@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=D9f7e4231231-
+      - DB_NAME=todo-app
+      - DB_DIALECT=postgres
+      - DB_PORT=5432
+      - JWT_SECRET=M0IVctKdZMPKpslhkTi6S8nawtsSei4cWBphfZip+EA=
+      - PORT=5000
+      - ORIGIN='https://frontend:8080'
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+    networks:
+      - todo-list-network
+
+  frontend:
+    build:
+      context: ./Front
+    environment:
+      - VUE_APP_API_URL=https://backend:5000/api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+    networks:
+      - todo-list-network
+
+  postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=D9f7e4231231-
+      - POSTGRES_DB=todo-app
+    ports:
+      - "5432:5432"
+    networks:
+      - todo-list-network
+
+networks:
+  todo-list-network:
+    driver: bridge
