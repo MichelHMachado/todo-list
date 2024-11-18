@@ -4,15 +4,16 @@
       <h1 class="text-center">ToDo List</h1>
     </header>
 
+    <button class="btn btn-primary mb-3" @click="openTaskForm()">
+      Add new task
+    </button>
+
     <TaskList
       :tasks="tasks"
       @edit="openTaskForm"
       @delete="deleteTask"
       @toggleComplete="toggleTaskCompletion"
     />
-    <button class="btn btn-primary" @click="openTaskForm()">
-      Add new task
-    </button>
 
     <div v-if="isTaskFormOpen" class="modal-overlay">
       <div class="modal-content">
