@@ -8,6 +8,7 @@ import cors from "cors";
 import https from "https";
 import fs from "fs";
 import { initModels } from "./models/index.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/tasks", taskRoutes);
