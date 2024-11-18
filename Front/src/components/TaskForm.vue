@@ -35,9 +35,14 @@
           <option value="high">High</option>
         </select>
       </div>
-      <button type="submit" class="btn btn-primary">
-        {{ form.uuid ? "Save" : "Add" }}
-      </button>
+      <div style="gap: 16px" class="d-flex justify-content-center">
+        <button type="button" class="btn btn-danger" @click="cancelForm">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-primary">
+          {{ form.uuid ? "Save" : "Add" }}
+        </button>
+      </div>
     </form>
   </div>
 </template>
@@ -70,6 +75,9 @@ export default {
       } else {
         this.addTask(this.form);
       }
+      this.$emit("close");
+    },
+    cancelForm() {
       this.$emit("close");
     },
   },
