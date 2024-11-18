@@ -15,6 +15,7 @@ router.post("/", authenticate, async (req, res) => {
       priority,
       userUuid,
     });
+
     res.status(201).json(newTask);
   } catch (error) {
     res.status(500).json({ message: "Error creating task", error });
@@ -115,9 +116,9 @@ router.post("/generate", authenticate, async (req, res) => {
       });
     }
 
-    await Task.bulkCreate(tasks);
+    const newTasks = await Task.bulkCreate(tasks);
 
-    res.status(201).json(tasks);
+    res.status(201).json(newTasks);
   } catch (error) {
     res.status(500).json({ message: "Error generating tasks", error });
   }

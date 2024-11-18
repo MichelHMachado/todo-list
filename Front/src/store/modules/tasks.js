@@ -20,7 +20,7 @@ export default {
       state.tasks.unshift(task);
     },
     ADD_MOCK_TASKS(state, tasks) {
-      state.tasks.push(...tasks);
+      state.tasks.unshift(...tasks);
     },
     EDIT_TASK(state, updatedTask) {
       const index = state.tasks.findIndex(
@@ -44,6 +44,7 @@ export default {
     async fetchTasks({ commit }) {
       try {
         const data = await fetchTasks();
+
         commit("SET_TASKS", data);
       } catch (error) {
         console.error("Error fetching tasks:", error);
