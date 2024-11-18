@@ -21,7 +21,7 @@ router.post("/", authenticate, async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
+router.get("/", authenticate, async (req, res) => {
   try {
     const tasks = await Task.findAll();
 
@@ -31,7 +31,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:uuid", async (req, res) => {
+router.get("/:uuid", authenticate, async (req, res) => {
   try {
     const task = await Task.findByPk(req.params.uuid);
     if (!task) {
@@ -43,7 +43,7 @@ router.get("/:uuid", async (req, res) => {
   }
 });
 
-router.put("/:uuid", async (req, res) => {
+router.put("/:uuid", authenticate, async (req, res) => {
   try {
     const { title, description, priority, completed } = req.body;
     const task = await Task.findByPk(req.params.uuid);
@@ -64,7 +64,7 @@ router.put("/:uuid", async (req, res) => {
   }
 });
 
-router.delete("/:uuid", async (req, res) => {
+router.delete("/:uuid", authenticate, async (req, res) => {
   try {
     const task = await Task.findByPk(req.params.uuid);
 
@@ -79,7 +79,7 @@ router.delete("/:uuid", async (req, res) => {
   }
 });
 
-router.patch("/:uuid/completed", async (req, res) => {
+router.patch("/:uuid/completed", authenticate, async (req, res) => {
   try {
     const task = await Task.findByPk(req.params.uuid);
 
