@@ -1,5 +1,13 @@
 <template>
   <div class="task-list">
+    <div class="mb-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search tasks..."
+        v-model="searchTerm"
+      />
+    </div>
     <div class="btn-group mb-3" role="group">
       <button
         @click="filterTasks('all')"
@@ -23,7 +31,7 @@
         Completed
       </button>
     </div>
-    <ul class="list-group">
+    <ul style="max-height: 400px" class="list-group overflow-auto pb-5">
       <TaskItem
         v-for="task in filteredTasks"
         :key="task.id"
@@ -45,17 +53,31 @@ export default {
   data() {
     return {
       filter: "all",
+      searchTerm: "",
     };
   },
   computed: {
     ...mapGetters("tasks", ["tasks"]),
     filteredTasks() {
+      let tasksToFilter = this.tasks; // Corrected to use `this.tasks`
+
       if (this.filter === "completed") {
-        return this.tasks.filter((task) => task.completed);
+        tasksToFilter = tasksToFilter.filter((task) => task.completed);
       } else if (this.filter === "pending") {
-        return this.tasks.filter((task) => !task.completed);
+        tasksToFilter = tasksToFilter.filter((task) => !task.completed);
       }
-      return this.tasks;
+
+      if (this.searchTerm) {
+        tasksToFilter = tasksToFilter.filter(
+          (task) =>
+            task.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+            task.description
+              .toLowerCase()
+              .includes(this.searchTerm.toLowerCase())
+        );
+      }
+
+      return tasksToFilter;
     },
   },
   methods: {
