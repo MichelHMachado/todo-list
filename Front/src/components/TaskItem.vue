@@ -17,8 +17,8 @@
               task.priority === 'low'
                 ? 'bg-primary'
                 : task.priority === 'medium'
-                  ? 'bg-warning'
-                  : 'bg-danger'
+                ? 'bg-warning'
+                : 'bg-danger'
             "
             >{{ task.priority }}</span
           >
@@ -29,7 +29,7 @@
         </div>
       </div>
 
-      <div style="gap: 16px" class="actions d-flex">
+      <div style="gap: 16px" class="actions d-flex flex-column flex-md-row">
         <button
           style="min-width: 82px"
           class="btn"

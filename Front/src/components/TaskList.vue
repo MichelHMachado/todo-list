@@ -33,8 +33,8 @@
     </div>
     <RecycleScroller
       class="scroller"
-      :items="filteredTasks"
-      :item-size="88"
+      :items="filteredTasks || []"
+      :item-size="computedItemSize"
       key-field="uuid"
       v-slot="{ item }"
       ><TaskItem
@@ -60,12 +60,13 @@ export default {
     return {
       filter: "all",
       searchTerm: "",
+      defaultItemSize: 88,
     };
   },
   computed: {
     ...mapGetters("tasks", ["tasks"]),
     filteredTasks() {
-      let tasksToFilter = this.tasks; // Corrected to use `this.tasks`
+      let tasksToFilter = this.tasks;
 
       if (this.filter === "completed") {
         tasksToFilter = tasksToFilter.filter((task) => task.completed);
@@ -84,6 +85,9 @@ export default {
       }
 
       return tasksToFilter;
+    },
+    computedItemSize() {
+      return window.innerWidth < 768 ? 164 : this.defaultItemSize;
     },
   },
   methods: {
