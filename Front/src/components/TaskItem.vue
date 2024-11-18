@@ -1,5 +1,6 @@
 <template>
   <li
+    style="min-height: 76px"
     class="list-group-item d-flex justify-content-between align-items-center"
     :class="{ completed: task.completed }"
   >

@@ -136,4 +136,8 @@ export default {
 .btn-group .btn:focus {
   box-shadow: none !important;
 }
+
+.scroller {
+  max-height: 600px;
+}
 </style>
