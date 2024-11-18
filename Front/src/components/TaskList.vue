@@ -31,6 +31,19 @@
         Completed
       </button>
     </div>
+
+    <div class="mb-3">
+      <label for="prioritySort" class="form-label mr-2">Sort by Priority</label>
+      <select
+        id="prioritySort"
+        class="form-select"
+        v-model="selectedPriorityOrder"
+      >
+        <option value="low">Low to High</option>
+        <option value="high">High to Low</option>
+      </select>
+    </div>
+
     <RecycleScroller
       class="scroller"
       :items="filteredTasks || []"
@@ -45,8 +58,6 @@
         @toggleComplete="toggleComplete"
       />
     </RecycleScroller>
-
-    <ul style="max-height: 400px" class="list-group overflow-auto pb-5"></ul>
   </div>
 </template>
 
@@ -60,6 +71,7 @@ export default {
     return {
       filter: "all",
       searchTerm: "",
+      selectedPriorityOrder: "low",
       defaultItemSize: 88,
     };
   },
@@ -83,6 +95,16 @@ export default {
               .includes(this.searchTerm.toLowerCase())
         );
       }
+
+      tasksToFilter.sort((a, b) => {
+        const priorityOrder = { low: 1, medium: 2, high: 3 };
+        if (this.selectedPriorityOrder === "low") {
+          return priorityOrder[a.priority] - priorityOrder[b.priority];
+        } else if (this.selectedPriorityOrder === "high") {
+          return priorityOrder[b.priority] - priorityOrder[a.priority];
+        }
+        return 0;
+      });
 
       return tasksToFilter;
     },
