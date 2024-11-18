@@ -9,7 +9,19 @@ export const createTask = async (taskData) => {
       },
     });
 
-    return response;
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const createMockTasks = async (count = 100) => {
+  try {
+    const response = await api.post("/tasks/generate", {
+      count: count,
+    });
+
+    return response.data;
   } catch (error) {
     console.error(error);
   }

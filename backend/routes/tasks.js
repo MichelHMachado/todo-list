@@ -23,7 +23,9 @@ router.post("/", authenticate, async (req, res) => {
 
 router.get("/", authenticate, async (req, res) => {
   try {
-    const tasks = await Task.findAll();
+    const tasks = await Task.findAll({
+      order: [["createdAt", "DESC"]],
+    });
 
     res.status(201).json(tasks);
   } catch (error) {
@@ -95,6 +97,29 @@ router.patch("/:uuid/completed", authenticate, async (req, res) => {
     res
       .status(500)
       .json({ message: "Error updating task completion status", error });
+  }
+});
+
+router.post("/generate", authenticate, async (req, res) => {
+  try {
+    const { count } = req.body;
+    const { uuid: userUuid } = req.user;
+    const tasks = [];
+
+    for (let i = 0; i < count; i++) {
+      tasks.push({
+        title: `Task ${i + 1}`,
+        description: `This is the description for task ${i + 1}`,
+        priority: ["low", "medium", "high"][Math.floor(Math.random() * 3)],
+        userUuid,
+      });
+    }
+
+    await Task.bulkCreate(tasks);
+
+    res.status(201).json(tasks);
+  } catch (error) {
+    res.status(500).json({ message: "Error generating tasks", error });
   }
 });
 

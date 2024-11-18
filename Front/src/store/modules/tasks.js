@@ -1,4 +1,5 @@
 import {
+  createMockTasks,
   createTask,
   deleteTask,
   editTask,
@@ -16,10 +17,15 @@ export default {
       state.tasks = tasks;
     },
     ADD_TASK(state, task) {
-      state.tasks.push(task);
+      state.tasks.unshift(task);
+    },
+    ADD_MOCK_TASKS(state, tasks) {
+      state.tasks.push(...tasks);
     },
     EDIT_TASK(state, updatedTask) {
-      const index = state.tasks.findIndex((task) => task.uuid === updatedTask.uuid);
+      const index = state.tasks.findIndex(
+        (task) => task.uuid === updatedTask.uuid
+      );
       if (index !== -1) {
         state.tasks.splice(index, 1, updatedTask);
       }
@@ -47,6 +53,14 @@ export default {
       try {
         const data = await createTask(task);
         commit("ADD_TASK", data);
+      } catch (error) {
+        console.error("Error adding task:", error);
+      }
+    },
+    async addMockTasks({ commit }, count) {
+      try {
+        const data = await createMockTasks(count);
+        commit("ADD_MOCK_TASKS", data);
       } catch (error) {
         console.error("Error adding task:", error);
       }
