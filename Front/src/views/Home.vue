@@ -1,12 +1,19 @@
 <template>
-  <div class="container mt-5">
+  <div class="container">
     <header class="mb-4">
       <h1 class="text-center">ToDo List</h1>
     </header>
-
-    <button class="btn btn-primary mb-3" @click="openTaskForm()">
-      Add new task
-    </button>
+    <div
+      style="gap: 16px"
+      class="d-flex justify-content-center align-items-center mb-4"
+    >
+      <button class="btn btn-primary" @click="openTaskForm()">
+        Add new task
+      </button>
+      <button class="btn btn-secondary" @click="addMockTasks(200)">
+        Add mock tasks
+      </button>
+    </div>
 
     <TaskList
       :tasks="tasks"
@@ -48,6 +55,7 @@ export default {
       "fetchTasks",
       "createTask",
       "editTask",
+      "addMockTasks",
     ]),
 
     openTaskForm(task = null) {
@@ -85,6 +93,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 500;
 }
 .modal-content {
   background: #fff;
@@ -92,5 +101,6 @@ export default {
   border-radius: 8px;
   width: 90%;
   max-width: 500px;
+  z-index: 510;
 }
 </style>
