@@ -17,5 +17,3 @@ export const signup = async (credentials) => {
     throw new Error(`Signup failed: ${error}`);
   }
 };
-
-export default api;
