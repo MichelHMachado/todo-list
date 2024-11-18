@@ -6,8 +6,13 @@ const state = {
 };
 
 const mutations = {
-  SET_TOKEN(state, token) {
-    state.token = token;
+  SET_TOKEN(state, access_token) {
+    state.access_token = access_token;
+    localStorage.setItem("access_token", access_token);
+  },
+  CLEAR_TOKEN(state) {
+    state.access_token = null;
+    localStorage.removeItem("access_token");
   },
   SET_USER(state, user) {
     state.user = user;
@@ -19,7 +24,6 @@ const actions = {
     try {
       const data = await login(credentials);
       commit("SET_TOKEN", data.access_token);
-      localStorage.setItem("access_token", data.access_token);
       commit("SET_USER", data.user);
     } catch (error) {
       console.error("Login failed:  ", error);
@@ -30,16 +34,18 @@ const actions = {
     try {
       const data = await signup(credentials);
       commit("SET_TOKEN", data.access_token);
-      localStorage.setItem("access_token", data.access_token);
       commit("SET_USER", data.user);
     } catch (error) {
       console.error("Signup failed: ", error);
     }
   },
+  logout({ commit }) {
+    commit("CLEAR_TOKEN");
+  },
 };
 
 const getters = {
-  isAuthenticated: (state) => !!state.token,
+  isAuthenticated: (state) => !!state.access_token,
   user: (state) => state.user,
 };
 
