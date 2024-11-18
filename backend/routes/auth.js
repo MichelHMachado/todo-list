@@ -48,7 +48,7 @@ const generateTokens = (user, res) => {
     { uuid: user.uuid, name: user.name, email: user.email },
     process.env.JWT_SECRET,
     {
-      expiresIn: "0.5m",
+      expiresIn: "15m",
     }
   );
 
@@ -87,8 +87,7 @@ router.post("/refresh-token", async (req, res) => {
     const user = await User.findByPk(decoded.uuid);
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    const { access_token, refresh_token } = generateTokens(user, res);
-    setRefreshToken(res, refresh_token);
+    const { access_token } = generateTokens(user, res);
 
     return res.json({ access_token });
   } catch (error) {
