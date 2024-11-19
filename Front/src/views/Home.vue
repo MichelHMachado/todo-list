@@ -32,17 +32,14 @@
 </template>
 
 <script>
-import TaskList from "@/components/TaskList.vue";
-import TaskForm from "@/components/TaskForm.vue";
-import LogoutButton from "@/components/LogoutButton.vue";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "HomePage",
   components: {
-    TaskList,
-    TaskForm,
-    LogoutButton,
+    TaskList: () => import("@/components/TaskList.vue"),
+    TaskForm: () => import("@/components/TaskForm.vue"),
+    LogoutButton: () => import("@/components/LogoutButton.vue"),
   },
   data() {
     return {
